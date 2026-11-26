@@ -38,9 +38,13 @@ if (-not $NoPath) {
     }
 }
 
-$keyPath = Join-Path $env:USERPROFILE ".nvidia-key"
-if (-not $env:NVIDIA_API_KEY -and -not (Test-Path -LiteralPath $keyPath)) {
-    Write-Warning "No NVIDIA key found. Put your key in $keyPath or set NVIDIA_API_KEY."
+$keyHome = $env:USERPROFILE
+if (-not $keyHome) { $keyHome = $env:HOME }
+if ($keyHome) {
+    $keyPath = Join-Path $keyHome ".nvidia-key"
+    if (-not $env:NVIDIA_API_KEY -and -not (Test-Path -LiteralPath $keyPath)) {
+        Write-Warning "No NVIDIA key found. Put your key in $keyPath or set NVIDIA_API_KEY."
+    }
 }
 
 Write-Host "Installed nemo.cmd and nemo.ps1 to $TargetDir"
